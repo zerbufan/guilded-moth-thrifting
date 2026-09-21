@@ -70,7 +70,47 @@ function updateTotal() {
   document.getElementById("summaryTotal").textContent = `$${base + accessory}`;
 }
 
-form.addEventListener("submit", e => {
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const zip = form.elements.zip.value.trim();
+  const email = form.elements.email.value.trim();
+  const status = document.getElementById("formStatus");
+
+  if(!/^\d{5}(-\d{4})?$/.test(zip)) {
+    status.textContent = "Please enter a valid US ZIP code.";
+    form.elements.zip.focus();
+    return;
+  }
+
+  if(!email.includes("@")) {
+    status.textContent = "Please enter a valid email address.";
+    form.elements.email.focus();
+    return;
+  }
+
+  status.textContent = "Sending your order...";
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: new FormData(form)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      status.textContent = "Your order details have been sent! Thank you for choosing Guilded Moth. 🦋";
+      form.reset();
+      updateTotal();
+    } else {
+      status.textContent = "Something went wrong sending your order. Please try again.";
+    }
+  } catch (error) {
+    status.textContent = "Something went wrong sending your order. Please try again.";
+  }
+});
+
   e.preventDefault();
   const zip = form.elements.zip.value.trim();
   const email = form.elements.email.value.trim();
