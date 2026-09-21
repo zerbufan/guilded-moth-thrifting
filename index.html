@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guilded Moth Thrifting</title>
+  <meta name="description" content="Personalized thrift bundles curated around your size, style, and aesthetic.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="paper-noise"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Guilded Moth Thrifting home">
+      <span class="brand-moth">☾</span>
+      <span>
+        <strong>Guilded Moth</strong>
+        <small>THRIFTING</small>
+      </span>
+    </a>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#bundles">Bundles</a>
+      <a href="#how">How It Works</a>
+      <a href="#faq">FAQ</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero section">
+      <div class="hero-decoration">✦</div>
+      <p class="eyebrow">A little treasure hunt, made for you</p>
+      <h1>Your Style.<br><em>Our Thrift Hunt.</em></h1>
+      <p class="hero-copy">Tell us what you wear, what you love, and what you never want to see. We'll hunt through thrifted finds and curate a clothing bundle around you.</p>
+      <a class="button primary" href="#bundles">Explore the Bundles</a>
+      <div class="hero-moth">𓆩♡𓆪</div>
+    </section>
+
+    <section id="bundles" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">Choose your treasure chest</p>
+        <h2>Thrift Bundles</h2>
+        <p>Pick your bundle first. You'll customize everything on the next step.</p>
+      </div>
+
+      <div class="bundle-grid" id="bundleGrid"></div>
+      <p class="shipping-note">✦ US shipping only. Shipping is calculated separately using your shipping location.</p>
+    </section>
+
+    <section id="how" class="section parchment-section">
+      <div class="section-heading">
+        <p class="eyebrow">The ritual</p>
+        <h2>How It Works</h2>
+      </div>
+      <div class="steps">
+        <article><span>01</span><h3>Choose</h3><p>Pick the bundle size that fits the amount of thrifted treasure you want.</p></article>
+        <article><span>02</span><h3>Tell Me Your Style</h3><p>Share your size, aesthetic, colors, fit preferences, Pinterest board, and anything you want me to avoid.</p></article>
+        <article><span>03</span><h3>The Hunt Begins</h3><p>I use your details as a guide while searching for pieces that fit your vibe.</p></article>
+        <article><span>04</span><h3>Curate & Ship</h3><p>Your finds are gathered into one personalized bundle and shipped to your US address.</p></article>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <div>
+        <p class="eyebrow">A tiny thrift shop with a big imagination</p>
+        <h2>Welcome to the Moth's Cabinet.</h2>
+        <p>Guilded Moth Thrifting is built around the fun part of thrifting: never knowing what you'll discover next. Instead of handing you a generic outfit, each bundle starts with your own style and turns into a little treasure hunt.</p>
+        <p>Because thrift inventory changes constantly, exact brands and exact pieces aren't guaranteed. Your preferences are the map; the thrift store is the adventure.</p>
+      </div>
+      <div class="about-card"><span>☾</span><strong>Thrifted.</strong><strong>Personal.</strong><strong>A little strange.</strong></div>
+    </section>
+
+    <section id="faq" class="section parchment-section">
+      <div class="section-heading">
+        <p class="eyebrow">Before the hunt</p>
+        <h2>FAQ</h2>
+      </div>
+      <div class="faq-list">
+        <details><summary>What is a thrift bundle?</summary><p>A curated collection of thrifted clothing chosen around the size, style, colors, fit, and preferences you provide.</p></details>
+        <details><summary>Does the bundle size mean my clothing size?</summary><p>No. The bundle size determines how many pieces you receive. Your clothing size is collected separately during customization.</p></details>
+        <details><summary>Can I send a Pinterest board?</summary><p>Absolutely. A Pinterest board is welcome as visual inspiration. It does not guarantee that exact pieces from the board will be found.</p></details>
+        <details><summary>Can I request specific colors or styles?</summary><p>Yes. You can list favorites, dislikes, specific requests, and exclusions. Flexibility helps because thrift inventory is unpredictable.</p></details>
+        <details><summary>Are exact brands guaranteed?</summary><p>No. The goal is to match your overall vibe and preferences, not guarantee a particular brand or exact item unless explicitly stated.</p></details>
+        <details><summary>Do you ship internationally?</summary><p>No. Guilded Moth Thrifting currently ships within the United States only.</p></details>
+        <details><summary>Is shipping included?</summary><p>No. Shipping is calculated separately based on your US shipping location and shown in your order summary.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-moth">𓆩 ✦ 𓆪</div>
+    <strong>GUILDED MOTH THRIFTING</strong>
+    <p>Your style, found somewhere beautiful.</p>
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="order-modal" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
+      <button class="close-modal" id="closeModal" aria-label="Close">×</button>
+      <div class="modal-top">
+        <p class="eyebrow">Your chosen treasure chest</p>
+        <h2 id="orderTitle">Customize Your Bundle</h2>
+        <div class="selected-bundle" id="selectedBundle"></div>
+      </div>
+
+      <form id="orderForm">
+        <input type="hidden" id="bundleId" name="bundle">
+        <input type="hidden" id="bundlePrice" name="bundle_price">
+
+        <fieldset>
+          <legend>01 — Accessories</legend>
+          <p class="field-note">Add a little extra treasure to your bundle.</p>
+          <div class="choice-grid">
+            <label class="choice"><input type="radio" name="accessories" value="No accessories" data-price="0" checked> <span>No accessories</span><b>+$0</b></label>
+            <label class="choice"><input type="radio" name="accessories" value="Accessories — $10" data-price="10"> <span>Add accessories</span><b>+$10</b></label>
+            <label class="choice"><input type="radio" name="accessories" value="Accessories — $15" data-price="15"> <span>Extra accessories</span><b>+$15</b></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>02 — Your Size</legend>
+          <label>Clothing size *
+            <select name="clothing_size" required>
+              <option value="">Choose a size</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>Other / see notes</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>03 — Your Style</legend>
+          <label>Aesthetic / vibe
+            <input name="aesthetic" placeholder="e.g. whimsygoth, grunge, y2k, punk...">
+          </label>
+          <div class="two-col">
+            <label>Favorite colors
+              <input name="favorite_colors" placeholder="Colors you love">
+            </label>
+            <label>Colors to avoid
+              <input name="avoid_colors" placeholder="Colors you don't want">
+            </label>
+          </div>
+          <label>Fit preferences
+            <input name="fit" placeholder="e.g. oversized, fitted, baggy, cropped...">
+          </label>
+          <label>Specific requests
+            <input name="requests" placeholder="Anything specific you're hoping for?">
+          </label>
+          <label>Exclusions
+            <input name="exclusions" placeholder="Please do not include...">
+          </label>
+          <label>Pinterest board link <span class="optional">(optional)</span>
+            <input type="url" name="pinterest" placeholder="https://pinterest.com/...">
+          </label>
+          <label>Tell me anything else about your style <span class="optional">(optional)</span>
+            <textarea name="notes" rows="4" placeholder="Describe your vibe in your own words..."></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>04 — Your US Shipping Details</legend>
+          <p class="field-note">Guilded Moth Thrifting currently ships within the United States only.</p>
+          <div class="two-col">
+            <label>First name *<input name="first_name" required></label>
+            <label>Last name *<input name="last_name" required></label>
+          </div>
+          <label>Email *<input type="email" name="email" required placeholder="you@example.com"></label>
+          <label>Street address *<input name="street" required autocomplete="street-address"></label>
+          <div class="three-col">
+            <label>City *<input name="city" required autocomplete="address-level2"></label>
+            <label>State *<select name="state" required><option value="">State</option></select></label>
+            <label>ZIP code *<input name="zip" required inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" placeholder="12345"></label>
+          </div>
+        </fieldset>
+
+        <section class="order-summary">
+          <div>
+            <p class="eyebrow">Your order</p>
+            <h3 id="summaryBundle">Bundle</h3>
+          </div>
+          <div class="summary-line"><span>Bundle</span><strong id="summaryBase">$0</strong></div>
+          <div class="summary-line"><span id="summaryAccessoryName">Accessories</span><strong id="summaryAccessory">$0</strong></div>
+          <div class="summary-line"><span>Shipping</span><strong id="summaryShipping">Calculated after address</strong></div>
+          <div class="summary-total"><span>Estimated total before shipping</span><strong id="summaryTotal">$0</strong></div>
+          <p class="field-note">Shipping is calculated separately. Payment integration will be connected after the storefront is finalized.</p>
+        </section>
+
+        <button class="button primary full" type="submit">Review My Thrift Order</button>
+        <p class="form-status" id="formStatus"></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
