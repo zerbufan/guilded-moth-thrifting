@@ -6,7 +6,12 @@ const bundles = [
   {id:"xl", name:"X-Large", items:"10 shirts + 7 pairs of pants", price:80}
 ];
 
-const states = ["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"];
+const states = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN",
+  "IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV",
+  "NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN",
+  "TX","UT","VT","VA","WA","WV","WI","WY","DC"
+];
 
 const grid = document.getElementById("bundleGrid");
 const backdrop = document.getElementById("modalBackdrop");
@@ -22,52 +27,97 @@ states.forEach(s => {
 
 bundles.forEach(bundle => {
   const card = document.createElement("article");
+
   card.className = "bundle-card";
   card.tabIndex = 0;
-  card.innerHTML = `<p class="eyebrow">${bundle.id === "m" ? "Most treasure" : "Thrift bundle"}</p>
+
+  card.innerHTML = `
+    <p class="eyebrow">${bundle.id === "m" ? "Most treasure" : "Thrift bundle"}</p>
     <h3>${bundle.name}</h3>
     <div class="items">${bundle.items}</div>
     <div class="price">$${bundle.price}</div>
-    <div class="select">Customize this bundle →</div>`;
+    <div class="select">Customize this bundle →</div>
+  `;
+
   card.addEventListener("click", () => openBundle(bundle));
-  card.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " ") openBundle(bundle); });
+
+  card.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openBundle(bundle);
+    }
+  });
+
   grid.appendChild(card);
 });
 
 function openBundle(bundle) {
   form.reset();
+
   document.getElementById("bundleId").value = bundle.id;
   document.getElementById("bundlePrice").value = bundle.price;
-  document.getElementById("selectedBundle").textContent = `${bundle.name} — ${bundle.items} — $${bundle.price}`;
-  document.getElementById("summaryBundle").textContent = `${bundle.name} — ${bundle.items}`;
-  document.getElementById("summaryBase").textContent = `$${bundle.price}`;
+
+  document.getElementById("selectedBundle").textContent =
+    `${bundle.name} — ${bundle.items} — $${bundle.price}`;
+
+  document.getElementById("summaryBundle").textContent =
+    `${bundle.name} — ${bundle.items}`;
+
+  document.getElementById("summaryBase").textContent =
+    `$${bundle.price}`;
+
   updateTotal();
+
   backdrop.classList.add("open");
-  backdrop.setAttribute("aria-hidden","false");
+  backdrop.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 }
 
 function closeModal() {
   backdrop.classList.remove("open");
-  backdrop.setAttribute("aria-hidden","true");
+  backdrop.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
 }
 
 document.getElementById("closeModal").addEventListener("click", closeModal);
-backdrop.addEventListener("click", e => { if(e.target === backdrop) closeModal(); });
-document.addEventListener("keydown", e => { if(e.key === "Escape" && backdrop.classList.contains("open")) closeModal(); });
+
+backdrop.addEventListener("click", e => {
+  if (e.target === backdrop) {
+    closeModal();
+  }
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && backdrop.classList.contains("open")) {
+    closeModal();
+  }
+});
 
 document.querySelectorAll('input[name="accessories"]').forEach(input => {
   input.addEventListener("change", updateTotal);
 });
 
 function updateTotal() {
-  const base = Number(document.getElementById("bundlePrice").value || 0);
-  const selected = document.querySelector('input[name="accessories"]:checked');
-  const accessory = selected ? Number(selected.dataset.price) : 0;
-  document.getElementById("summaryAccessory").textContent = `$${accessory}`;
-  document.getElementById("summaryAccessoryName").textContent = selected?.value || "Accessories";
-  document.getElementById("summaryTotal").textContent = `$${base + accessory}`;
+  const base = Number(
+    document.getElementById("bundlePrice").value || 0
+  );
+
+  const selected = document.querySelector(
+    'input[name="accessories"]:checked'
+  );
+
+  const accessory = selected
+    ? Number(selected.dataset.price)
+    : 0;
+
+  document.getElementById("summaryAccessory").textContent =
+    `$${accessory}`;
+
+  document.getElementById("summaryAccessoryName").textContent =
+    selected?.value || "Accessories";
+
+  document.getElementById("summaryTotal").textContent =
+    `$${base + accessory}`;
 }
 
 form.addEventListener("submit", async e => {
@@ -77,13 +127,13 @@ form.addEventListener("submit", async e => {
   const email = form.elements.email.value.trim();
   const status = document.getElementById("formStatus");
 
-  if(!/^\d{5}(-\d{4})?$/.test(zip)) {
+  if (!/^\d{5}(-\d{4})?$/.test(zip)) {
     status.textContent = "Please enter a valid US ZIP code.";
     form.elements.zip.focus();
     return;
   }
 
-  if(!email.includes("@")) {
+  if (!email.includes("@")) {
     status.textContent = "Please enter a valid email address.";
     form.elements.email.focus();
     return;
@@ -92,46 +142,36 @@ form.addEventListener("submit", async e => {
   status.textContent = "Sending your order...";
 
   try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: new FormData(form)
-    });
+    const response = await fetch(
+      "https://api.web3forms.com/submit",
+      {
+        method: "POST",
+        body: new FormData(form)
+      }
+    );
 
     const result = await response.json();
 
     if (result.success) {
-      status.textContent = "Your order details have been sent! Thank you for choosing Guilded Moth. 🦋";
+      status.textContent =
+        "Your order details have been sent! Thank you for choosing Guilded Moth. 🦋";
+
       form.reset();
       updateTotal();
     } else {
-      status.textContent = "Something went wrong sending your order. Please try again.";
+      status.textContent =
+        "Something went wrong sending your order. Please try again.";
     }
   } catch (error) {
-    status.textContent = "Something went wrong sending your order. Please try again.";
+    status.textContent =
+      "Something went wrong sending your order. Please try again.";
   }
-});
-
-  e.preventDefault();
-  const zip = form.elements.zip.value.trim();
-  const email = form.elements.email.value.trim();
-  const status = document.getElementById("formStatus");
-
-  if(!/^\d{5}(-\d{4})?$/.test(zip)) {
-    status.textContent = "Please enter a valid US ZIP code.";
-    form.elements.zip.focus();
-    return;
-  }
-  if(!email.includes("@")) {
-    status.textContent = "Please enter a valid email address.";
-    form.elements.email.focus();
-    return;
-  }
-
-  status.textContent = "Your order details are ready. Stripe checkout and email delivery will be connected in the next setup step.";
 });
 
 document.querySelectorAll('nav a[href^="#"]').forEach(a => {
   a.addEventListener("click", () => {
-    if(backdrop.classList.contains("open")) closeModal();
+    if (backdrop.classList.contains("open")) {
+      closeModal();
+    }
   });
 });
